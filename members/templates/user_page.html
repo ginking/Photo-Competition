@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+    Отбор {{ team.team_name }}
+    <br />
+    Активен ли е отбора {{ team.is_active }}
+    <br />
+    Потребителско име {{ user_name.name }}
+    <br />
+    Регистриран ли е за участие: {{ user_name.is_participant }} 
+</div>
+
+{% endblock %}

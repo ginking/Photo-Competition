@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+
+<form method="post" action="#">
+    {% csrf_token %}
+    <div class="control-group">
+        <label>Потребител</label>
+
+        <div>
+            {{ form.given_name }}
+        </div>
+        <br/>
+    </div>
+
+    <button type="submit">Вход</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if form.errors %}
+<div>
+    <strong>Грешка! </strong>
+        <p>Грешна парола/потребителско име.</p>
+</div>
+{% endif %}
+
+<h1>Вход в системата</h1>
+    <form method="post" action="#">
+        {% csrf_token %}
+        <div>
+            <label>Потребител</label>
+
+            <div>
+                <input name="username" type="text" placeholder="" />
+            </div>
+            <br/>
+        </div>
+
+        <div>
+            <label>Парола</label>
+
+            <div>
+                <input name="password" type="password" placeholder="" required/>
+            </div>
+            <br/>
+        </div>
+        <button type="submit">Вход</button>
+    </form>
+
+{% endblock %}
