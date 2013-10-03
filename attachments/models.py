@@ -12,9 +12,9 @@ class Attachment(models.Model):
     category = models.ForeignKey(Category, related_name='attach_category')
 
     def __unicode__(self):
-        return unicode(self.file_name)
+        return unicode(self.photo_file)
 
     def photo(self):
-        return format(str(self.file_name).split('/')[-1])
+        return format(str(self.photo_file).split('/')[-1])
 
 

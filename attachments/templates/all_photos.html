@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+    {% for a in attachments %}
+        {{ a.member_owner }} <br />
+        {{ a.category }} <br />
+        {{ a.team_owner }} <br />
+        {{ a.points }} <br />
+        <img src="{{ a.photo_file.url }}" alt="image" height="342" width="342">
+        <br />
+    {% endfor %}
+</div>
+
+{% endblock %}

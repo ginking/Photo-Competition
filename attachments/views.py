@@ -30,3 +30,9 @@ def upload_photo(request):
     else:
         form = UploadPhotoForm()
     return render(request, 'upload_photo.html', {'form': form})
+
+
+def all_photos(request):
+    attachments = Attachment.objects.all()
+    return render(request, 'all_photos.html', {'attachments' : attachments})
+
