@@ -7,9 +7,9 @@ import sys
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-MAX_TEAMS_ALLOWED = 3
-MAX_MEMBERS_ALLOWED = 7
-MIN_MEMBERS_REQUIRED = 4
+MAX_TEAMS_ALLOWED = 2
+MAX_MEMBERS_ALLOWED = 3
+MIN_MEMBERS_REQUIRED = 1
 
 CATEGORY = (
     (1, 'In The Air'),
@@ -148,7 +148,8 @@ INSTALLED_APPS = (
     'teams',
     'competition',
     'categories',
-    'members'
+    'members',
+#     'polls'
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

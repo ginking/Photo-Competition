@@ -9,7 +9,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from mpc.settings import MAX_MEMBERS_ALLOWED, MIN_MEMBERS_REQUIRED, MAX_TEAMS_ALLOWED
 
-from members.forms import Registration
+from members.forms import Registration, ChoiceLeader
 
 from models import Member
 from teams.models import Team
@@ -33,7 +33,6 @@ def user_prfile(request):
                                                  'user_name' : user })
 #     return render(request, 'user_page.html', locals())
 
-@login_required
 def game_registration(request):
     if request.method == 'POST': #is_authenticated():
         form = Registration(request.POST)
@@ -46,8 +45,9 @@ def game_registration(request):
             print "!!!!!!!!!!", participant_members
             print "!!!m!!", m.team_id, m.is_participant, t.is_active
             active_teams = len(Team.objects.filter(is_active=True))
-            if active_teams < MAX_TEAMS_ALLOWED and \
-                                participant_members < MAX_MEMBERS_ALLOWED and \
+            print "!!!!!!^^^!!!!", active_teams <= MAX_TEAMS_ALLOWED, participant_members <= MAX_MEMBERS_ALLOWED, m.is_participant == False 
+            if active_teams <= MAX_TEAMS_ALLOWED and \
+                                participant_members <= MAX_MEMBERS_ALLOWED and \
                                 m.is_participant == False:
                 m.update_member()
                 if not t.is_active and participant_members >= MIN_MEMBERS_REQUIRED-1:
@@ -61,3 +61,30 @@ def game_registration(request):
 #         return views.login(request, template_name='game_registration.html')
     return render_to_response('game_registration.html', {'form': form }, 
                               context_instance=RequestContext(request))
+
+@login_required
+def choice_leader(request):
+
+    if request.method == 'POST':
+        form = ChoiceLeader(request.POST)
+        if form.is_valid():
+            print "!!!!!!!!!choice!!!!!!!!!", form
+#             m = Member.objects.get(username=request.user)
+#             t = Team.objects.get(id=m.team_id)
+# #             c = form.cleaned_data['photo_category']
+#             c = Category.objects.get(id=form.cleaned_data['choice'])
+#             print "******************", c
+# #             c = get_object_or_404(Category, category_name=form.cleaned_data['photo_category'])
+#             print "############################", m, t, c
+#             instance = Attachment(photo_file=request.FILES['photo_file'], 
+#                                 team_owner=t,
+#                                 member_owner=m,
+#                                 category=c)
+#             instance.save()
+#             return redirect('user-profile')
+    form = ChoiceLeader(user=request.user)
+#     member = Member.objects.get(username=request.user)
+    return render_to_response('choice_leader.html', {'form': form }, 
+                              context_instance=RequestContext(request))
+#     return render(request, 'choice_leader.html', {'form': form})
+

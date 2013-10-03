@@ -8,4 +8,5 @@ urlpatterns = patterns('members.views',
     url(r'^login/$', 'login', name='login'),
     url(r'^logout/$', 'logout', name='logout'),
     url(r'^accounts/profile/$', 'user_prfile', name='user-profile'),
+    url(r'^choice_leader/$', 'choice_leader', name='choice-leader'),
 )
