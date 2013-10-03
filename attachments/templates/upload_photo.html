@@ -2,7 +2,7 @@
 {% block content %}
 
 <div>
-    <!-- Upload form. Note enctype attribute! -->
+    {% if member.is_participant %}
     <form action="#" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <p>{{ form.non_field_errors }}</p>
@@ -16,5 +16,6 @@
         
         <p><input type="submit" value="Upload" /></p>
     </form>
+    {% endif %}
 </div>
 {% endblock %}

@@ -29,7 +29,9 @@ def upload_photo(request):
             return redirect('user-profile')
     else:
         form = UploadPhotoForm()
-    return render(request, 'upload_photo.html', {'form': form})
+    member = Member.objects.get(username=request.user)
+    return render(request, 'upload_photo.html', {'form': form,
+                                                 'member' : member})
 
 
 def all_photos(request):
