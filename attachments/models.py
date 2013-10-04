@@ -17,5 +17,3 @@ class Attachment(models.Model):
 
     def photo(self):
         return format(str(self.photo_file).split('/')[-1])
-
-

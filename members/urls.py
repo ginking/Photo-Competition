@@ -1,7 +1,5 @@
 from django.conf.urls import patterns, include, url
 
-from django.conf.urls import patterns, url
-
 
 urlpatterns = patterns('members.views',
     url(r'^game_registration/$', 'game_registration', name='game-registration'),

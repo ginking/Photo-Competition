@@ -8,7 +8,6 @@ class Registration(forms.Form):
 
 
 class ChoiceLeader(forms.Form):
-
     choice = forms.ModelChoiceField(queryset=Member.objects.none(), widget=forms.RadioSelect)
 
     def __init__(self, *args, **kwargs):
