@@ -1,4 +1,6 @@
 from django.http import HttpResponse
+from django.shortcuts import render_to_response
 
 def index(request):
-    return HttpResponse("Melon Photo Challenge")
+    return render_to_response('index.html', {})
+#     return HttpResponse("Melon Photo Challenge")
