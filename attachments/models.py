@@ -10,6 +10,7 @@ class Attachment(models.Model):
     team_owner = models.ForeignKey(Team, related_name='attach_team')
     member_owner = models.ForeignKey(Member, related_name='attach_member')
     category = models.ForeignKey(Category, related_name='attach_category')
+#     confirmed = models.BooleanField(default=False)
 
     def __unicode__(self):
         return unicode(self.photo_file)
