@@ -18,10 +18,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from teams.forms import UploadFileForm
 
 
-def handle_uploaded_file(f):
+def handle_uploaded_file(file):
 #     with open('some/file/name.txt', 'wb+') as destination:
 
-    for chunk in f.chunks():
+    for chunk in file.chunks():
         team_rows = chunk.split('\n')
         teams = team_rows[0].split(',')
         for t in teams:
@@ -29,17 +29,17 @@ def handle_uploaded_file(f):
             instance.save()
 
         i = 0
-        for m in team_rows[1:]:
-            am = m.split(',')
-            print "!!!!!!!!!!!!!!1", am
-            for a in am:
+        for members in team_rows[1:]:
+            list_of_members = members.split(',')
+            print "!!!!!!!!!!!!!!1", list_of_members
+            for member in list_of_members:
                 i += 1
-                t = Team.objects.get(id=i)
-                sp = a.split(' ')
-                j = ''.join(sp)
-                if j != "":
-                    inst = Member.objects.create_user(username=j, password=j,
-                                                      name=a, team_id=t.id)
+                team = Team.objects.get(id=i)
+                first_last_name = member.split(' ')
+                usrname = ''.join(first_last_name)
+                if usrname != "":
+                    inst = Member.objects.create_user(username=usrname, password=usrname,
+                                                      name=member, team_id=team.id)
 #                 inst.save()
             i = 0
 #             destination.write(chunk)

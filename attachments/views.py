@@ -14,17 +14,17 @@ def upload_photo(request):
     if request.method == 'POST':
         form = UploadPhotoForm(request.POST, request.FILES)
         if form.is_valid():
-            m = Member.objects.get(username=request.user)
-            t = Team.objects.get(id=m.team_id)
+            request_member = Member.objects.get(username=request.user)
+            request_member_team = Team.objects.get(id=request_member.team_id)
 #             c = form.cleaned_data['photo_category']
-            c = Category.objects.get(id=form.cleaned_data['photo_category'])
-            print "******************", c
+            chose_category = Category.objects.get(id=form.cleaned_data['photo_category'])
+            print "******************", chose_category
 #             c = get_object_or_404(Category, category_name=form.cleaned_data['photo_category'])
-            print "############################", m, t, c
+            print "############################", request_member, request_member_team, chose_category
             instance = Attachment(photo_file=request.FILES['photo_file'], 
-                                team_owner=t,
-                                member_owner=m,
-                                category=c)
+                                team_owner=request_member_team,
+                                member_owner=request_member,
+                                category=chose_category)
             instance.save()
             return redirect('user-profile')
     else:
