@@ -10,6 +10,8 @@ class Member(User):
     team = models.ForeignKey(Team, related_name='team')
     is_leader = models.BooleanField(default=False)
     is_participant = models.BooleanField(default=False)
+    score = models.IntegerField(default=0)
+    is_leader_voted = models.BooleanField(default=False)
 
     def __unicode__(self):
         return unicode(self.username)
@@ -21,13 +23,16 @@ class Member(User):
         self.is_participant = True
         self.save()
 
+    def score_update(self):
+        self.score += 1
+        self.save()
 
-# class Leader(User):
+# class PoLL(models.Model):
 #     member = models.ForeignKey(Member, related_name='leader_member')
 #     team = models.ForeignKey(Team, related_name='leader_team')
-#     votes = models.IntegerField(default=0)
-# 
+#     score = models.IntegerField(default=0)
+#  
 #     def votes_update(self):
-#         self.votes += 1
+#         self.score += 1
 #         self.save()
 

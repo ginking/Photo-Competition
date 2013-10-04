@@ -66,25 +66,31 @@ def game_registration(request):
 def choice_leader(request):
 
     if request.method == 'POST':
-        form = ChoiceLeader(request.POST)
+        form = ChoiceLeader(request.POST, user=request.user)
         if form.is_valid():
-            print "!!!!!!!!!choice!!!!!!!!!", form
-#             m = Member.objects.get(username=request.user)
-#             t = Team.objects.get(id=m.team_id)
-# #             c = form.cleaned_data['photo_category']
-#             c = Category.objects.get(id=form.cleaned_data['choice'])
-#             print "******************", c
-# #             c = get_object_or_404(Category, category_name=form.cleaned_data['photo_category'])
-#             print "############################", m, t, c
-#             instance = Attachment(photo_file=request.FILES['photo_file'], 
-#                                 team_owner=t,
-#                                 member_owner=m,
-#                                 category=c)
-#             instance.save()
-#             return redirect('user-profile')
+            print "!!!!!!!!!choice!!!!!!!!!", form.cleaned_data['choice'].id
+            instance = form.cleaned_data['choice']
+            m = Member.objects.get(id=request.user.id)
+            if not m.is_leader_voted:
+                instance.score_update()
+                instance.save()
+                m.is_leader_voted = True
+                m.save()
+            return redirect('user-profile')
     form = ChoiceLeader(user=request.user)
 #     member = Member.objects.get(username=request.user)
     return render_to_response('choice_leader.html', {'form': form }, 
                               context_instance=RequestContext(request))
 #     return render(request, 'choice_leader.html', {'form': form})
+
+@staff_member_required
+def res_choice_leader(request):
+    m = Member.objects.filter(is_participant=True).values('team_id')
+    print "!!!!!!!!!m!!!!!!!!!!!", m
+    team_members = Member.objects.filter(team=m.team).filter(is_participant=True)
+    print "!!!!!!!!!!!!!!team_members!!!!!!!!!", team_members
+    return render_to_response('res_choice_leader.html', 
+                              {'team_members': team_members})
+
+
 
