@@ -71,10 +71,12 @@ def choice_leader(request):
             print "!!!!!!!!!choice!!!!!!!!!", form.cleaned_data['choice'].id
             instance = form.cleaned_data['choice']
             m = Member.objects.get(id=request.user.id)
-            if not m.is_leader_voted:
+            if not m.is_leader_voted and m.is_participant:
                 instance.score_update()
                 instance.save()
                 m.is_leader_voted = True
+                if instance.id == m.id:
+                    m.score += 1
                 m.save()
             return redirect('user-profile')
     form = ChoiceLeader(user=request.user)
@@ -85,12 +87,28 @@ def choice_leader(request):
 
 @staff_member_required
 def res_choice_leader(request):
-    m = Member.objects.filter(is_participant=True).values('team_id')
-    print "!!!!!!!!!m!!!!!!!!!!!", m
-    team_members = Member.objects.filter(team=m.team).filter(is_participant=True)
-    print "!!!!!!!!!!!!!!team_members!!!!!!!!!", team_members
+    set_of_team_id = set()
+    list_of_team_id = Member.objects.filter(is_participant=True).values('team_id')
+    for i in list_of_team_id:
+        set_of_team_id.add(i['team_id'])
+    print "!!!!!!!!!set_of_team_id!!!!!!!!!!!", set_of_team_id
+    max_scored_members = {}
+    for tid in set_of_team_id:
+        max_scored_members.update({tid : Member.objects.filter(team_id=tid).filter(is_participant=True).order_by('-score')[0]})
+    print "!!!!!!!!!!!l!!!!!!!!!!!!!!!", max_scored_members
+    
+    t = Team.objects.filter(is_active=True)
+    for i in t:
+        inst = max_scored_members[i.id]
+        Member.objects.filter(team_id=i.id).update(is_leader=False)
+        inst.is_leader=True
+        inst.save()
+    leaders = Member.objects.filter(is_leader=True)
+#     Member.objects.filterfilter(team_id=m.team).filter(is_participant=True)
+#     team_members = Member.objects.filter(team=m.team).filter(is_participant=True)
+#     print "!!!!!!!!!!!!!!team_members!!!!!!!!!", team_members
     return render_to_response('res_choice_leader.html', 
-                              {'team_members': team_members})
+                              {'leaders': leaders})
 
 
 
